@@ -128,7 +128,12 @@ function StickyVisual({ progress }) {
   return (
     <div className="lg:col-span-7 relative lg:sticky lg:top-28 self-start">
       <div className="absolute inset-0 bg-primary/10 blur-[80px] rounded-full z-0 transform scale-75" />
-      <div className="relative w-full max-w-md mx-auto aspect-square z-10">
+      {/* ml-auto (not mx-auto): pushes the panel to the column's right edge
+          — aligned with the navbar's right boundary — instead of centering
+          it and leaving unused space on both sides. Any slack becomes extra
+          gap toward the text column on the left, not dead space on the
+          right. */}
+      <div className="relative w-full max-w-md ml-auto aspect-square z-10">
         <AnimatePresence initial={false}>
           <motion.img
             key={activeVisual}

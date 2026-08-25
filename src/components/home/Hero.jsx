@@ -20,7 +20,7 @@ export default function Hero() {
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent z-0" />
       <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           <div className="lg:col-span-5 flex flex-col gap-6">
             {/* line-height is inline, not a `leading-*` class: Tailwind's
                 responsive md:text-5xl/lg:text-6xl utilities each carry their

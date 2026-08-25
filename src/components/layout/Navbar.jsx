@@ -135,11 +135,19 @@ export default function Navbar() {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.nav
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: EASE_OUT }}
-            className="lg:hidden relative bg-background border-t border-outline-variant/30 px-6 py-6 flex flex-col gap-5 overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: EASE_OUT }}
+            // Fixed + full remaining viewport height (not `relative`/`height:
+            // auto`) so the panel always covers everything below the header,
+            // regardless of viewport height — otherwise it only grows to fit
+            // its own links, leaving the page underneath visible right below
+            // the last one (verified: looked like a broken/double-rendered
+            // page on tall phone screens). `100dvh` (not `100vh`) accounts
+            // for mobile browser chrome that resizes the viewport.
+            className="lg:hidden fixed inset-x-0 bottom-0 bg-background border-t border-outline-variant/30 px-6 py-8 flex flex-col gap-5 overflow-y-auto"
+            style={{ top: headerHeight, height: `calc(100dvh - ${headerHeight}px)` }}
           >
             {NAV_LINKS.map((link) => (
               <a

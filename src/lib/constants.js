@@ -1,7 +1,7 @@
 export const SITE = {
   name: 'VoxPath',
   legalName: 'VoxPath',
-  taglineBase: 'English Learning.',
+  taglineBase: 'English Learning',
   taglineAccent: 'Built Around Real Progress.',
   description:
     'An elite AI-driven platform for focused, measurable language mastery. Every learner follows a clear, personalized path from first assessment to advanced practice, while moderators and admins get real-time visibility into who’s progressing and who needs support.',

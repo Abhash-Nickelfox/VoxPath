@@ -64,7 +64,7 @@ export default function Impact() {
       <section className="section-padding bg-background relative overflow-hidden" id="impact">
         <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop">
           <Reveal direction="up" className="text-center mb-20 max-w-3xl mx-auto">
-            <div className="inline-block font-label-md text-primary tracking-widest uppercase mb-4 font-semibold text-4xl">
+            <div className="inline-block font-label-md text-primary tracking-widest uppercase mb-4 font-semibold text-2xl sm:text-4xl">
               MEASURABLE TRANSFORMATION
             </div>
             <p className="font-body-lg text-on-surface-variant text-lg font-light">
