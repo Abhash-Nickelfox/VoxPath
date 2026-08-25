@@ -4,8 +4,8 @@ export const SITE = {
   taglineBase: 'English Learning.',
   taglineAccent: 'Built Around Real Progress.',
   description:
-    'An elite AI-driven platform designed to provide a focused, measurable, and highly structured environment for language mastery.',
-  ctaLabel: "Let's Discuss",
+    'An elite AI-driven platform for focused, measurable language mastery. Every learner follows a clear, personalized path from first assessment to advanced practice, while moderators and admins get real-time visibility into who’s progressing and who needs support.',
+  ctaLabel: "Let's Connect",
   year: new Date().getFullYear(),
 }
 

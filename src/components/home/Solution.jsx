@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring, useTransform } from 'framer-motion'
-import learnerVisual from '../../assets/images/learner.png'
-import moderatorVisual from '../../assets/images/mederator.png'
+import solutionVisual from '../../assets/images/solution.png'
+import solutionNextVisual from '../../assets/images/solution-next.png'
 import { Reveal } from '../shared/Reveal.jsx'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion.js'
 
@@ -38,18 +38,18 @@ const STEPS = [
   },
   {
     number: '7',
-    title: 'Admin/Monetization',
+    title: 'Admin & Monetization',
     description: 'Comprehensive oversight, analytics, and revenue management.',
   },
 ]
 
-// One consistent visual style (product-screenshot mockups, same 1:1 aspect
-// ratio) rather than mixing an abstract diagram with a UI screenshot. The
-// panel crossfades exactly once, at the boundary between the assessment
-// steps and the live-session steps, instead of swapping per step.
+// Same 1:1 aspect ratio for both visuals, so the panel's box never resizes
+// between them. The panel crossfades exactly once, at the boundary between
+// the assessment steps and the live-session steps, instead of swapping per
+// step.
 const VISUALS = [
-  { src: learnerVisual, alt: 'Learner Dashboard' },
-  { src: moderatorVisual, alt: 'Moderator Live Session Control' },
+  { src: solutionVisual, alt: 'VoxPath Ecosystem Overview' },
+  { src: solutionNextVisual, alt: 'VoxPath Advanced Learning Features' },
 ]
 const VISUAL_FOR_STEP = [0, 0, 0, 1, 1, 1, 1]
 
@@ -174,11 +174,11 @@ export default function Solution() {
     <section className="section-padding bg-background relative" id="solution">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent z-0" />
       <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative z-10">
-        <Reveal direction="up" className="text-center mb-24 max-w-3xl mx-auto">
+        <Reveal direction="up" className="text-center mb-20 max-w-3xl mx-auto">
           <div className="inline-block font-label-md text-primary tracking-widest uppercase mb-4 font-semibold text-4xl">
             A SEAMLESS LEARNING ECOSYSTEM
           </div>
-          <h2 className="font-display-lg text-on-surface mb-6">A Holistic Ecosystem.</h2>
+          <h2 className="font-display-lg text-on-surface mb-6">One Connected Journey.</h2>
           <p className="font-body-lg text-on-surface-variant text-lg font-light">
             A connected learning system that turns assessment into structured practice, actionable feedback and
             measurable progress.

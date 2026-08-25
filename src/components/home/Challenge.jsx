@@ -12,17 +12,17 @@ const CHALLENGES = [
   {
     number: '02',
     title: 'No Improvement Guidance',
-    description: 'Learners receive scores but no actionable steps on how to improve specific weaknesses.',
+    description: 'Learners get a score, but no concrete steps for improving their specific weaknesses.',
   },
   {
     number: '03',
     title: 'No Structure',
-    description: 'Ad-hoc learning sessions without a clear, progressive curriculum path.',
+    description: 'Sessions happen ad hoc, with no clear, progressive curriculum to follow.',
   },
   {
     number: '04',
     title: 'No Feedback Loop',
-    description: 'Mistakes go uncorrected, leading to fossilization of incorrect language patterns.',
+    description: 'Mistakes go uncorrected, so incorrect habits get reinforced instead of fixed.',
   },
   {
     number: '05',
@@ -37,7 +37,7 @@ const CHALLENGES = [
   {
     number: '07',
     title: 'No Continuation',
-    description: 'Learning stops when the session ends; no targeted practice materials for post-session review.',
+    description: 'Learning stops when the session ends, with no targeted materials to reinforce what was covered.',
   },
 ]
 
@@ -89,8 +89,8 @@ export default function Challenge() {
             THE FRAGMENTED LEARNING GAP
           </h2>
           <p className="font-body-lg text-on-surface-variant text-lg font-light">
-            Traditional language learning creates gaps between assessment, practice, feedback and measurable
-            progress.
+            Traditional language learning is fragmented — assessment, practice, and feedback happen in silos, with
+            no clear way to measure real progress.
           </p>
         </Reveal>
 

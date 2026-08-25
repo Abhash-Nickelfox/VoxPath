@@ -31,7 +31,6 @@ export default function Footer() {
         <p className="font-label-md text-[10px] uppercase tracking-widest text-on-surface-variant/70">
           © {SITE.year} {SITE.legalName}. All rights reserved.
         </p>
-       
       </div>
     </footer>
   )

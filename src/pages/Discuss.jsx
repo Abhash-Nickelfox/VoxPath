@@ -37,11 +37,15 @@ const LEFT_STAGGER = 0.08
 // element crosses into the viewport. On mobile the stacked layout pushes
 // the form mostly below the fold on load, so a whileInView version of this
 // would leave it invisible until the user scrolled far enough (verified).
-function EntranceItem({ as: Tag = 'div', direction = 'up', delay = 0, duration = 0.6, className, children }) {
+function EntranceItem({ as: Tag = 'div', direction = 'up', delay = 0, duration = 0.6, className, style, children }) {
   const prefersReducedMotion = usePrefersReducedMotion()
 
   if (prefersReducedMotion) {
-    return <Tag className={className}>{children}</Tag>
+    return (
+      <Tag className={className} style={style}>
+        {children}
+      </Tag>
+    )
   }
 
   const MotionTag = motion[Tag] ?? motion.div
@@ -50,6 +54,7 @@ function EntranceItem({ as: Tag = 'div', direction = 'up', delay = 0, duration =
   return (
     <MotionTag
       className={className}
+      style={style}
       initial={{ opacity: 0, ...offset }}
       animate={{ opacity: 1, y: 0, x: 0, scale: 1 }}
       transition={{ duration, delay, ease: EASE_OUT }}
@@ -87,7 +92,7 @@ export default function Discuss() {
   }
 
   return (
-    <section className="min-h-screen bg-background pt-32 pb-24 relative overflow-hidden">
+    <section className="min-h-screen bg-background pt-32 pb-32 relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent z-0" />
       <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
@@ -114,10 +119,16 @@ export default function Discuss() {
               >
                 Let's Discuss
               </EntranceItem>
+              {/* line-height is inline, not `leading-snug`: Tailwind's
+                  responsive md:text-5xl utility carries its own bundled
+                  line-height:1, which beats a plain `leading-*` class at that
+                  breakpoint (same cascade-order gotcha as the Hero heading —
+                  see Hero.jsx). */}
               <EntranceItem
                 as="h1"
                 delay={1 * LEFT_STAGGER}
-                className="text-4xl md:text-5xl font-bold tracking-tighter text-on-surface leading-snug"
+                className="text-4xl md:text-5xl font-bold tracking-tighter text-on-surface"
+                style={{ lineHeight: 1.2 }}
               >
                 Bring <span className="text-gradient-accent">{SITE.name}</span> to your learners.
               </EntranceItem>

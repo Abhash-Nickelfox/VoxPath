@@ -9,11 +9,14 @@ import { SITE } from '../../lib/constants.js'
 
 const TRANSFORMATIONS = [
   { title: 'Assessment', before: 'Subjective Human Grading', after: 'Objective AI Evaluation' },
+  { title: 'Guidance', before: 'A Score, No Next Steps', after: 'Personalized Action Plans' },
   { title: 'Practice', before: 'Unstructured Ad-hoc Sessions', after: 'Curated Progressive Modules' },
   { title: 'Feedback', before: 'Vague or Non-existent', after: 'Actionable Micro-Corrections' },
   { title: 'Progress', before: 'Invisible and Unmeasured', after: 'Clear Visual Tracking' },
   { title: 'Moderation', before: 'Chaotic Group Dynamics', after: 'Structured Flow Control' },
   { title: 'Continuation', before: 'Learning Stops Post-Session', after: 'Targeted Review Materials' },
+  { title: 'Oversight', before: 'Growth Outpaces Visibility', after: 'Real-Time Platform Insight' },
+  { title: 'Access', before: 'Practice Tied to Class Schedules', after: 'On-Demand Speaking Practice' },
 ]
 
 const CHECK_POP_VARIANTS = {
@@ -23,7 +26,7 @@ const CHECK_POP_VARIANTS = {
 
 function TransformationCard({ item }) {
   return (
-    <div className="bg-surface p-8 rounded-xl border border-outline-variant/20 hover:border-primary/30 transition-colors shadow-sm">
+    <div className="h-full flex flex-col bg-surface p-8 rounded-xl border border-outline-variant/20 hover:border-primary/30 transition-colors shadow-sm">
       <h4 className="font-headline-md text-xl mb-6 text-on-surface">{item.title}</h4>
       <RevealGroup stagger={0.35} className="flex flex-col gap-4">
         <RevealItem
@@ -39,7 +42,7 @@ function TransformationCard({ item }) {
         </RevealItem>
         <RevealItem direction="up" duration={0.4} className="flex items-start gap-3 text-on-surface">
           <span className="font-label-md text-[10px] uppercase tracking-widest text-primary pt-1 w-12 font-semibold">
-            Voxpath
+            VoxPath
           </span>
           <div className="flex gap-2">
             <motion.span variants={CHECK_POP_VARIANTS}>
@@ -65,17 +68,17 @@ export default function Impact() {
               MEASURABLE TRANSFORMATION
             </div>
             <p className="font-body-lg text-on-surface-variant text-lg font-light">
-              VoxPath closes the gaps between assessment, practice, feedback and progress — turning fragmented
-              learning into a measurable continuous experience.
+              VoxPath closes the gaps between assessment, practice, feedback, and progress — turning a fragmented
+              process into one connected, measurable experience.
             </p>
           </Reveal>
 
           <RevealGroup
             stagger={STAGGER.tight}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr gap-10"
           >
             {TRANSFORMATIONS.map((item) => (
-              <RevealItem key={item.title} direction="up" duration={0.5}>
+              <RevealItem key={item.title} direction="up" duration={0.5} className="h-full">
                 <TransformationCard item={item} />
               </RevealItem>
             ))}
@@ -83,7 +86,7 @@ export default function Impact() {
         </div>
       </section>
 
-      <section className="py-24 bg-dark-section border-t border-outline-variant/20 text-center relative overflow-hidden">
+      <section className="section-padding bg-dark-section border-t border-outline-variant/20 text-center relative overflow-hidden">
         <motion.div
           aria-hidden="true"
           animate={prefersReducedMotion ? undefined : breatheLoop}
@@ -99,7 +102,7 @@ export default function Impact() {
             as="p"
             className="font-body-lg text-base md:text-lg max-w-2xl font-light text-slate-300"
           >
-            Join the elite AI-driven platform and experience the future of language mastery.
+            See how VoxPath can bring structure, feedback, and measurable progress to your language program.
           </Reveal>
           <Reveal direction="up" delay={0.2} className="mt-4">
             <MagneticButton>

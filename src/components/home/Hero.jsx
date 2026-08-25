@@ -6,7 +6,7 @@ import { Reveal, RevealGroup, RevealItem } from '../shared/Reveal.jsx'
 import MotionLink from '../shared/MotionLink.jsx'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion.js'
 import { useTilt } from '../../hooks/useTilt.js'
-import { STAGGER, VIEWPORT_EAGER, breatheLoop, floatLoop } from '../../lib/motion.js'
+import { STAGGER, VIEWPORT_EAGER, floatLoop } from '../../lib/motion.js'
 
 export default function Hero() {
   const prefersReducedMotion = usePrefersReducedMotion()
@@ -15,21 +15,28 @@ export default function Hero() {
   return (
     <section
       id="overview"
-      className="relative min-h-[90vh] flex items-center pt-32 pb-24 overflow-hidden bg-background"
+      className="relative min-h-[90vh] flex items-center pt-32 pb-32 overflow-hidden bg-background"
       style={{ backgroundImage: `url(${heroBg})`, backgroundSize: 'cover', backgroundPosition: 'center center' }}
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent z-0" />
       <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5 flex flex-col gap-6">
+            {/* line-height is inline, not a `leading-*` class: Tailwind's
+                responsive md:text-5xl/lg:text-6xl utilities each carry their
+                own bundled line-height:1, which — being in a later media-query
+                block — beats a plain `leading-*` class of equal specificity at
+                those breakpoints. That 1:1 ratio clipped the "g" descender in
+                "Progress." An inline style always wins regardless of cascade
+                order, so it stays correct at every breakpoint. */}
             <RevealGroup
               as="h1"
               stagger={STAGGER.base}
               viewport={VIEWPORT_EAGER}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-on-surface leading-snug"
-              style={{ letterSpacing: '-0.03em' }}
+              className="text-[31px] md:text-[43px] lg:text-[55px] font-bold tracking-tighter text-on-surface"
+              style={{ letterSpacing: '-0.03em', lineHeight: 1.2 }}
             >
-              <RevealItem as="span" direction="up" className="block">
+              <RevealItem as="span" direction="up" className="block whitespace-nowrap">
                 {SITE.taglineBase}
               </RevealItem>
               <RevealItem as="span" direction="up" delay={0.08} className="block text-gradient-accent">
@@ -54,22 +61,11 @@ export default function Hero() {
             </Reveal>
           </div>
 
-          <Reveal
-            direction="scale"
-            delay={0.45}
-            duration={0.7}
-            viewport={VIEWPORT_EAGER}
-            className="lg:col-span-7 relative"
-          >
+          <div className="lg:col-span-7 relative">
             <motion.div
               animate={prefersReducedMotion ? undefined : floatLoop}
               className="relative w-full mt-12 lg:mt-0 flex flex-col items-center justify-center"
             >
-              <motion.div
-                aria-hidden="true"
-                animate={prefersReducedMotion ? undefined : breatheLoop}
-                className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full z-0 transform scale-75"
-              />
               <motion.div
                 ref={containerRef}
                 style={tiltStyle}
@@ -78,12 +74,12 @@ export default function Hero() {
               >
                 <img
                   alt="VoxPath AI Dashboard"
-                  className="w-full h-auto max-h-[76vh] object-contain rounded-3xl shadow-2xl shadow-primary/10 mx-auto"
+                  className="w-full h-auto max-h-[76vh] object-contain rounded-3xl mx-auto"
                   src={heroDashboard}
                 />
               </motion.div>
             </motion.div>
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>
