@@ -89,7 +89,7 @@ export default function Challenge() {
             THE FRAGMENTED LEARNING GAP
           </h2>
           <p className="font-body-lg text-on-surface-variant text-lg font-light">
-            Traditional language learning is fragmented — assessment, practice, and feedback happen in silos, with
+            Traditional language learning is fragmented: assessment, practice, and feedback happen in silos, with
             no clear way to measure real progress.
           </p>
         </Reveal>

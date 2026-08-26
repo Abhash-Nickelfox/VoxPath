@@ -19,7 +19,7 @@ const INITIAL_FORM = {
 }
 
 const FIELD_CLASSES =
-  'w-full bg-transparent border-0 border-b border-outline-variant py-3 text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-0 focus:border-primary transition-colors duration-300'
+  'w-full bg-transparent border-0 border-b border-outline-variant py-2 text-sm text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-0 focus:border-primary transition-colors duration-300'
 
 const FEATURES = [
   'Personalized platform demo',
@@ -92,10 +92,10 @@ export default function Discuss() {
   }
 
   return (
-    <section className="min-h-screen bg-background pt-32 pb-32 relative overflow-hidden">
+    <section className="min-h-screen bg-background pt-28 pb-12 lg:h-screen lg:pt-24 lg:pb-8 lg:flex lg:items-center relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent z-0" />
-      <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+      <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 lg:items-center">
           <div className="relative lg:col-span-5">
             {/* Subtle product-identity visual, scoped to this column only — never behind the form. */}
             <div
@@ -111,7 +111,7 @@ export default function Discuss() {
               }}
             />
 
-            <div className="relative flex flex-col gap-6">
+            <div className="relative flex flex-col gap-4 lg:gap-4">
               <EntranceItem
                 as="div"
                 delay={0}
@@ -141,7 +141,7 @@ export default function Discuss() {
                 the platform and how it fits your language program.
               </EntranceItem>
 
-              <div className="flex flex-col gap-4 mt-2">
+              <div className="flex flex-col gap-3 mt-1">
                 {FEATURES.map((label, index) => (
                   <EntranceItem
                     key={label}
@@ -161,7 +161,7 @@ export default function Discuss() {
                 delay={6 * LEFT_STAGGER}
                 className="text-on-surface-variant/70 text-sm mt-1"
               >
-                We'll get back to you within 1 business day.
+                We'll get back to you soon.
               </EntranceItem>
             </div>
           </div>
@@ -175,7 +175,7 @@ export default function Discuss() {
               as="div"
               delay={0.3}
               duration={0.65}
-              className="glass-panel glow-effect rounded-3xl p-8 md:p-12 overflow-hidden"
+              className="glass-panel glow-effect rounded-3xl p-6 md:p-7 lg:p-6 overflow-hidden"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {status === 'success' ? (
@@ -217,20 +217,20 @@ export default function Discuss() {
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.35, ease: EASE_OUT }}
                     onSubmit={handleSubmit}
-                    className="flex flex-col gap-8"
+                    className="flex flex-col gap-4"
                   >
-                    <div className="flex flex-col gap-1.5">
+                    <div className="flex flex-col gap-1">
                       <h2 className="font-headline-lg text-xl md:text-2xl text-on-surface">
                         Let's build the right learning experience.
                       </h2>
-                      <p className="text-on-surface-variant font-body-md text-sm">
+                      {/* <p className="text-on-surface-variant font-body-md text-sm">
                         Tell us a little about your organization and we'll take it from there.
-                      </p>
+                      </p> */}
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label htmlFor="name" className="font-label-md text-on-surface-variant uppercase tracking-widest">
+                        <label htmlFor="name" className="font-label-md text-on-surface-variant uppercase tracking-widest text-xs">
                           Name
                         </label>
                         <input
@@ -245,7 +245,7 @@ export default function Discuss() {
                         />
                       </div>
                       <div>
-                        <label htmlFor="email" className="font-label-md text-on-surface-variant uppercase tracking-widest">
+                        <label htmlFor="email" className="font-label-md text-on-surface-variant uppercase tracking-widest text-xs">
                           Email
                         </label>
                         <input
@@ -260,7 +260,7 @@ export default function Discuss() {
                         />
                       </div>
                       <div>
-                        <label htmlFor="phone" className="font-label-md text-on-surface-variant uppercase tracking-widest">
+                        <label htmlFor="phone" className="font-label-md text-on-surface-variant uppercase tracking-widest text-xs">
                           Phone
                         </label>
                         <input
@@ -276,7 +276,7 @@ export default function Discuss() {
                       <div>
                         <label
                           htmlFor="organization"
-                          className="font-label-md text-on-surface-variant uppercase tracking-widest"
+                          className="font-label-md text-on-surface-variant uppercase tracking-widest text-xs"
                         >
                           Organization
                         </label>
@@ -293,7 +293,7 @@ export default function Discuss() {
                     </div>
 
                     <div>
-                      <label htmlFor="interest" className="font-label-md text-on-surface-variant uppercase tracking-widest">
+                      <label htmlFor="interest" className="font-label-md text-on-surface-variant uppercase tracking-widest text-xs">
                         I'm interested in
                       </label>
                       <select
@@ -312,13 +312,13 @@ export default function Discuss() {
                     </div>
 
                     <div>
-                      <label htmlFor="message" className="font-label-md text-on-surface-variant uppercase tracking-widest">
+                      <label htmlFor="message" className="font-label-md text-on-surface-variant uppercase tracking-widest text-xs">
                         Message
                       </label>
                       <textarea
                         id="message"
                         name="message"
-                        rows={4}
+                        rows={3}
                         required
                         value={form.message}
                         onChange={handleChange}

@@ -77,7 +77,7 @@ export default function Navbar() {
         className="relative max-w-container-max mx-auto px-6 md:px-margin-desktop h-20 flex justify-between items-center"
       >
         <Link to="/" className="flex items-center gap-3 text-primary hover:opacity-80 transition-opacity">
-          <span className="font-headline-md font-bold tracking-tight text-2xl text-on-surface">{SITE.name}</span>
+          <span className="font-headline-md font-bold tracking-tight text-4xl text-on-surface">{SITE.name}</span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-10">
@@ -89,7 +89,7 @@ export default function Navbar() {
               initial="rest"
               whileHover="hover"
               whileTap={{ scale: 0.97 }}
-              className={`relative font-label-md uppercase pb-2 transition-colors duration-300 ${
+              className={`relative font-label-md uppercase text-sm pb-2 transition-colors duration-300 ${
                 activeId === link.id ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
               }`}
             >
@@ -117,7 +117,7 @@ export default function Navbar() {
           to="/discuss"
           className="hidden lg:inline-flex items-center justify-center bg-primary text-white px-6 py-2 rounded-full font-label-md font-semibold hover:bg-primary/90 transition-colors shadow-sm"
         >
-          {SITE.ctaLabel}
+          {SITE.navCtaLabel}
         </MotionLink>
 
         <motion.button
@@ -154,7 +154,7 @@ export default function Navbar() {
                 key={link.id}
                 href={link.href}
                 onClick={(event) => handleNavClick(event, link)}
-                className={`font-label-md uppercase transition-colors duration-300 ${
+                className={`font-label-md uppercase text-sm transition-colors duration-300 ${
                   activeId === link.id ? 'text-primary' : 'text-on-surface-variant'
                 }`}
               >
@@ -166,7 +166,7 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
               className="inline-flex items-center justify-center bg-primary text-white px-6 py-2.5 rounded-full font-label-md font-semibold"
             >
-              {SITE.ctaLabel}
+              {SITE.navCtaLabel}
             </MotionLink>
           </motion.nav>
         )}

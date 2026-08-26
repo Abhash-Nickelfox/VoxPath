@@ -225,7 +225,7 @@ export default function Experience() {
                 DESIGNED AROUND EVERY ROLE
               </h2>
               <p className="font-body-lg text-on-surface-variant text-lg font-light max-w-3xl mx-auto">
-                Every participant interacts with VoxPath differently — from the learner building confidence to the
+                Every participant interacts with VoxPath differently, from the learner building confidence to the
                 moderator guiding the conversation and the admin orchestrating the entire ecosystem.
               </p>
             </Reveal>
@@ -294,7 +294,7 @@ export default function Experience() {
                   </div>
                   <h2 className="font-headline-lg text-on-surface text-3xl md:text-4xl">Control &amp; Flow.</h2>
                   <p className="font-body-lg text-on-surface-variant text-base font-light">
-                    Managing a live session takes focus. The Moderator UI clears away distractions — set the
+                    Managing a live session takes focus. The Moderator UI clears away distractions: set the
                     speaking order, manage audio, and keep time, all from one screen, so every participant gets a
                     fair chance to speak.
                   </p>
@@ -318,8 +318,8 @@ export default function Experience() {
                   </div>
                   <h2 className="font-headline-lg text-on-surface text-3xl md:text-4xl">Oversight &amp; Scale.</h2>
                   <p className="font-body-lg text-on-surface-variant text-base font-light">
-                    The Super Admin dashboard gives you a real-time view of the whole platform — user growth, active
-                    sessions, and moderator approvals, all in one place — so scaling to more institutions never
+                    The Super Admin dashboard gives you a real-time view of the whole platform: user growth, active
+                    sessions, and moderator approvals, all in one place. Scaling to more institutions never
                     means losing visibility.
                   </p>
                   {/* A fixed 2-column grid (not flex-wrap) wraps deterministically

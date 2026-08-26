@@ -68,7 +68,7 @@ export default function Impact() {
               MEASURABLE TRANSFORMATION
             </div>
             <p className="font-body-lg text-on-surface-variant text-lg font-light">
-              VoxPath closes the gaps between assessment, practice, feedback, and progress — turning a fragmented
+              VoxPath closes the gaps between assessment, practice, feedback, and progress, turning a fragmented
               process into one connected, measurable experience.
             </p>
           </Reveal>
