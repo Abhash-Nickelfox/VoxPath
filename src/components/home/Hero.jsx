@@ -20,7 +20,7 @@ export default function Hero() {
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent z-0" />
       <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-[10px] items-center">
           <div className="lg:col-span-5 flex flex-col gap-6">
             {/* line-height is inline, not a `leading-*` class: Tailwind's
                 responsive md:text-5xl/lg:text-6xl utilities each carry their
@@ -56,7 +56,7 @@ export default function Hero() {
                 to="/discuss"
                 className="inline-flex items-center justify-center bg-primary text-white px-8 py-3 rounded-full font-label-md font-semibold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
               >
-                {SITE.ctaLabel}
+                {SITE.homeCtaLabel}
               </MotionLink>
             </Reveal>
           </div>
@@ -64,7 +64,7 @@ export default function Hero() {
           <div className="lg:col-span-7 relative">
             <motion.div
               animate={prefersReducedMotion ? undefined : floatLoop}
-              className="relative w-full mt-12 lg:mt-0 flex flex-col items-center justify-center"
+              className="relative w-full lg:w-[calc(100%+8px)] mt-12 lg:mt-0 lg:ml-4 flex flex-col items-center justify-center"
             >
               <motion.div
                 ref={containerRef}
@@ -74,7 +74,7 @@ export default function Hero() {
               >
                 <img
                   alt="VoxPath AI Dashboard"
-                  className="w-full h-auto max-h-[76vh] object-contain rounded-3xl mx-auto"
+                  className="w-full h-auto max-h-[82vh] object-contain rounded-3xl mx-auto"
                   src={heroDashboard}
                 />
               </motion.div>

@@ -9,9 +9,9 @@ import moderatorDashboard from '../../assets/images/mederator.png'
 import adminDashboard from '../../assets/images/superadmin.png'
 
 const LEARNER_FEATURES = [
-  { icon: 'check_circle', label: 'Objective AI Scoring' },
+  { icon: 'check_circle', label: 'Objective AI Assessment' },
   { icon: 'check_circle', label: 'Visual Progress Tracking' },
-  { icon: 'check_circle', label: 'Targeted Micro-Feedback' },
+  { icon: 'check_circle', label: 'Detailed Skill Feedback' },
   { icon: 'check_circle', label: 'Pronunciation & Fluency Analysis' },
 ]
 
@@ -36,7 +36,7 @@ const ICON_POP_VARIANTS = {
   visible: { scale: 1, opacity: 1, transition: SPRING.snappy },
 }
 
-function FeatureList({ items, as = 'ul', containerClassName = 'flex flex-col gap-4 mt-4', itemClassName }) {
+function FeatureList({ items, as = 'ul', containerClassName = 'flex flex-col gap-2 mt-2', itemClassName }) {
   return (
     <RevealGroup as={as} stagger={0.06} className={containerClassName}>
       {items.map((feature) => (
@@ -184,14 +184,13 @@ function useMatchHeight(ref, aspect, imageWidthRatio = 1, cardPaddingPx = 0) {
 }
 
 // Each block's grid ratio, matched to its own ` lg:grid-cols-[...]`. Learner
-// needs a bigger image share (3fr/5fr) than Moderator/Super Admin (2fr/3fr)
-// to close its height gap — it also carries its own p-4 padding, which eats
-// into the achievable height. A single shared ratio doesn't work for all
-// three: pushing it higher to help Learner also narrows Super Admin's text
+// now shares Moderator's exact 7:4 image:text ratio, so both blocks give
+// their text and image columns the same proportional width. Super Admin
+// keeps its own tuned ratio: pushing it to match would narrow its text
 // column enough to flip its feature-tag row onto an extra line, jumping its
 // target height up rather than down (verified) — text wrapping changes in
-// discrete steps, not smoothly, so each block needs its own tuned value.
-const LEARNER_WIDTH_RATIO = 2.38
+// discrete steps, not smoothly, so that block still needs its own value.
+const LEARNER_WIDTH_RATIO = 7 / 4
 const MODERATOR_WIDTH_RATIO = 7 / 4
 const ADMIN_WIDTH_RATIO = 1.8375
 
@@ -211,7 +210,7 @@ export default function Experience() {
   return (
     <section className="bg-surface" id="experience">
       <div className="flex flex-col">
-        <div className="section-padding border-b border-outline-variant/20 bg-background">
+        <div className="pt-9 md:pt-12 pb-12 md:pb-16 border-b border-outline-variant/20 bg-background">
           {/* Container sizing lives on this static wrapper, not on the
               <Reveal> itself — matching every other section on the site.
               Putting `max-w-container-max` directly on an animated Reveal
@@ -220,13 +219,13 @@ export default function Experience() {
               the kind of alignment drift this container pattern is meant to
               prevent. */}
           <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop">
-            <Reveal direction="up" className="text-center mb-20">
+            <Reveal direction="up" className="text-center mb-14">
               <h2 className="font-label-md text-primary tracking-widest uppercase mb-6 font-semibold text-4xl">
                 DESIGNED AROUND EVERY ROLE
               </h2>
               <p className="font-body-lg text-on-surface-variant text-lg font-light max-w-3xl mx-auto">
-                Every participant interacts with VoxPath differently, from the learner building confidence to the
-                moderator guiding the conversation and the admin orchestrating the entire ecosystem.
+                Every user interacts with VoxPath differently, from learners building their English proficiency to 
+                moderators guiding sessions and admins managing the platform.
               </p>
             </Reveal>
           </div>
@@ -238,7 +237,7 @@ export default function Experience() {
                 screenshots, and at an even split they render shorter than
                 the text stack next to them. 2fr is still a comfortably
                 readable paragraph width. */}
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_2.38fr] gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-[4fr_7fr] gap-16 items-center">
               <div ref={learnerTextRef} className="order-1">
                 <Reveal direction="left" delay={0} className="flex flex-col justify-center gap-6">
                   <div className="inline-block font-label-md text-primary tracking-widest uppercase mb-1 font-semibold">
@@ -246,9 +245,9 @@ export default function Experience() {
                   </div>
                   <h2 className="font-headline-lg text-on-surface text-3xl md:text-4xl">Clarity &amp; Growth.</h2>
                   <p className="font-body-lg text-on-surface-variant text-base font-light">
-                    The Learner Dashboard is built for motivation and transparency. At a glance, learners see their
-                    precise proficiency level (e.g., B2), watch their progress build over time, and get immediate,
-                    specific feedback on things like pronunciation and fluency.
+                    The learner experience brings assessment, practice, feedback, and progress into one connected journey. 
+                    Learners see their proficiency level, review performance across key English skills, receive detailed 
+                    feedback after sessions, and track their improvement over time.
                   </p>
                   <FeatureList items={LEARNER_FEATURES} />
                 </Reveal>
@@ -259,7 +258,7 @@ export default function Experience() {
                 direction="right"
                 background=""
                 paddingClass=""
-                maxWidthClass="max-w-lg"
+                maxWidthClass="max-w-[544px]"
                 cardMaxWidthClass="max-w-[544px]"
                 matchHeightPx={learnerImageHeight}
                 alignClass="lg:mr-0 lg:ml-auto"

@@ -8,38 +8,40 @@ import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion.js'
 const STEPS = [
   {
     number: '1',
-    title: 'AI Assessment',
-    description: 'Precise, objective baseline evaluation using advanced speech recognition.',
+    title: 'AI Voice Assessment',
+    description: 'Objective English proficiency assessment through AI-powered voice conversations.',
   },
   {
     number: '2',
-    title: 'Onboarding',
-    description: 'Personalized learning paths generated based on assessment results.',
+    title: 'Onboarding & Level Setup',
+    description:
+      'Tell VoxPath about your goals and background, then receive a proficiency level and practice recommendations matched to you.',
   },
   {
     number: '3',
-    title: 'Discovery',
-    description: 'Curated modules and vocabulary targeting specific learner weaknesses.',
+    title: 'Session Discovery',
+    description:
+      'Discover speaking sessions matched to your proficiency level, with topics, schedules, and available seats clearly displayed.',
   },
   {
     number: '4',
-    title: 'Live Room',
-    description: 'Interactive, moderated conversational practice with real-time AI feedback.',
+    title: 'Live Speaking Sessions',
+    description: 'Structured, moderated group discussions with controlled speaking turns and participant management.',
   },
   {
     number: '5',
-    title: 'Progress',
-    description: 'Clear, visual tracking of advancement over time.',
+    title: 'Progress Tracking',
+    description: 'Visualize your proficiency level and session scores over time, so you can see how your English is improving.',
   },
   {
     number: '6',
-    title: 'Moderator UI',
-    description: 'Powerful tools for session management and participant engagement.',
+    title: 'Moderator Controls',
+    description: 'Manage speaking turns, mute or unmute participants, and keep every group session structured.',
   },
   {
     number: '7',
-    title: 'Admin & Monetization',
-    description: 'Comprehensive oversight, analytics, and revenue management.',
+    title: 'Admin & Platform Management',
+    description: 'Manage users, moderators, sessions, and platform activity from a centralized admin panel.',
   },
 ]
 
@@ -179,14 +181,13 @@ export default function Solution() {
     <section className="section-padding bg-background relative" id="solution">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent z-0" />
       <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative z-10">
-        <Reveal direction="up" className="text-center mb-20 max-w-3xl mx-auto">
+        <Reveal direction="up" className="text-center mb-14 max-w-3xl mx-auto">
           <div className="inline-block font-label-md text-primary tracking-widest uppercase mb-4 font-semibold text-4xl">
-            A SEAMLESS LEARNING ECOSYSTEM
+            A SEAMLESS SPEAKING JOURNEY
           </div>
           <h2 className="font-display-lg text-on-surface mb-6">One Connected Journey.</h2>
           <p className="font-body-lg text-on-surface-variant text-lg font-light">
-            A connected learning system that turns assessment into structured practice, actionable feedback and
-            measurable progress.
+            A connected learning experience that turns AI-powered assessment into level-matched practice, actionable feedback, and measurable progress.
           </p>
         </Reveal>
 
