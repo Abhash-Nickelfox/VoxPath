@@ -45,10 +45,10 @@ function FeatureList({ items, as = 'ul', containerClassName = 'flex flex-col gap
           as={as === 'ul' ? 'li' : 'div'}
           direction="up"
           duration={0.35}
-          className={itemClassName ?? 'flex items-center gap-3 text-on-surface text-base font-medium'}
+          className={itemClassName ?? 'flex items-center gap-3 text-on-surface text-base font-medium lg:text-sm xl:text-base'}
         >
           <motion.span variants={ICON_POP_VARIANTS} className="inline-flex">
-            <Icon name={feature.icon} className="text-primary text-xl" />
+            <Icon name={feature.icon} className="text-primary text-xl lg:text-lg xl:text-xl" />
           </motion.span>{' '}
           {feature.label}
         </RevealItem>
@@ -85,6 +85,7 @@ function TiltImageCard({
   // visually meant to align with (the same one the navbar spans to) —
   // any slack becomes extra gap toward the text column, not dead space.
   alignClass = 'lg:mx-auto',
+  mobileLayoutClass = 'w-full mx-auto',
   className = '',
 }) {
   const { containerRef, style: tiltStyle, handlers: tiltHandlers } = useTilt({ max: 4 })
@@ -99,16 +100,10 @@ function TiltImageCard({
       direction={direction}
       delay={delay}
       duration={0.6}
-      // Full-width "bleed" below `lg` instead of staying centered inside the
-      // page's own horizontal padding — these dashboard screenshots are
-      // dense desktop UI captures, and every extra pixel of width at mobile
-      // sizes matters for legibility. `w-full` alone isn't enough here: it
-      // resolves to 100% of the *padded* container, so pairing it with a
-      // negative margin just shifts the box left without growing it (leaves
-      // a gap on the right — verified). The width has to explicitly add back
-      // 2x whatever the negative margin cancels. `lg:` reverts both to the
-      // normal centered/contained desktop behavior, unchanged.
-      className={`${background} ${GLOW_CARD} ${paddingClass} ${cardWidthClass} w-[calc(100%+3rem)] -mx-6 md:w-[calc(100%+8rem)] md:-mx-margin-desktop lg:w-full ${alignClass} ${className}`}
+      // Below `lg`, keep dashboard screenshots contained and centered so they
+      // scale proportionally inside the page padding. `lg:` reverts to the
+      // desktop grid alignment supplied by each caller.
+      className={`${background} ${GLOW_CARD} ${paddingClass} ${cardWidthClass} ${mobileLayoutClass} lg:w-full ${alignClass} ${className}`}
     >
       <motion.div
         ref={containerRef}
@@ -119,6 +114,8 @@ function TiltImageCard({
         <img
           alt={alt}
           className={imgClassName}
+          decoding="async"
+          loading="lazy"
           style={matchHeightPx ? { '--match-h': `${matchHeightPx}px` } : undefined}
           src={src}
         />
@@ -237,14 +234,14 @@ export default function Experience() {
                 screenshots, and at an even split they render shorter than
                 the text stack next to them. 2fr is still a comfortably
                 readable paragraph width. */}
-            <div className="grid grid-cols-1 lg:grid-cols-[4fr_7fr] gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-[4fr_7fr] gap-16 lg:gap-10 xl:gap-16 items-center">
               <div ref={learnerTextRef} className="order-1">
-                <Reveal direction="left" delay={0} className="flex flex-col justify-center gap-6">
+                <Reveal direction="left" delay={0} className="flex flex-col justify-center gap-6 lg:gap-4 xl:gap-6">
                   <div className="inline-block font-label-md text-primary tracking-widest uppercase mb-1 font-semibold">
                     The Learner Experience
                   </div>
-                  <h2 className="font-headline-lg text-on-surface text-3xl md:text-4xl">Clarity &amp; Growth.</h2>
-                  <p className="font-body-lg text-on-surface-variant text-base font-light">
+                  <h2 className="font-headline-lg text-on-surface text-3xl md:text-4xl lg:text-3xl xl:text-4xl">Clarity &amp; Growth.</h2>
+                  <p className="font-body-lg text-on-surface-variant text-base font-light lg:text-sm xl:text-base">
                     The learner experience brings assessment, practice, feedback, and progress into one connected journey. 
                     Learners see their proficiency level, review performance across key English skills, receive detailed 
                     feedback after sessions, and track their improvement over time.
@@ -273,7 +270,7 @@ export default function Experience() {
             {/* 3fr/2fr (inverted from Learner/Super Admin's 2fr/3fr): the
                 image sits in the first track here, so it needs the *larger*
                 share to get the same extra width — same reasoning as above. */}
-            <div className="grid grid-cols-1 lg:grid-cols-[7fr_4fr] gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-[7fr_4fr] gap-16 lg:gap-10 xl:gap-16 items-center">
               <TiltImageCard
                 src={moderatorDashboard}
                 alt="Moderator App Experience"
@@ -287,12 +284,12 @@ export default function Experience() {
                 className="order-2 lg:order-1"
               />
               <div ref={moderatorTextRef} className="order-1 lg:order-2">
-                <Reveal direction="right" delay={0} className="flex flex-col justify-center gap-6">
+                <Reveal direction="right" delay={0} className="flex flex-col justify-center gap-6 lg:gap-4 xl:gap-6">
                   <div className="inline-block font-label-md text-primary tracking-widest uppercase mb-1 font-semibold">
                     The Moderator Experience
                   </div>
-                  <h2 className="font-headline-lg text-on-surface text-3xl md:text-4xl">Control &amp; Flow.</h2>
-                  <p className="font-body-lg text-on-surface-variant text-base font-light">
+                  <h2 className="font-headline-lg text-on-surface text-3xl md:text-4xl lg:text-3xl xl:text-4xl">Control &amp; Flow.</h2>
+                  <p className="font-body-lg text-on-surface-variant text-base font-light lg:text-sm xl:text-base">
                     Managing a live session takes focus. The Moderator UI clears away distractions: set the
                     speaking order, manage audio, and keep time, all from one screen, so every participant gets a
                     fair chance to speak.
@@ -306,17 +303,17 @@ export default function Experience() {
 
         <div className="section-padding bg-slate-100">
           <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop">
-            <div className="grid grid-cols-1 lg:grid-cols-[4fr_7.35fr] gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-[4fr_7.35fr] gap-16 lg:gap-10 xl:gap-16 items-center">
               {/* Wrapped in a plain div (not just <Reveal>, which doesn't
                   forward refs) so its rendered height can be measured and
                   matched by the image card alongside it. */}
               <div ref={adminTextRef} className="order-1">
-                <Reveal direction="left" delay={0} className="flex flex-col justify-center gap-6">
+                <Reveal direction="left" delay={0} className="flex flex-col justify-center gap-6 lg:gap-4 xl:gap-6">
                   <div className="inline-block font-label-md text-primary tracking-widest uppercase mb-1 font-semibold">
                     The Super Admin Experience
                   </div>
-                  <h2 className="font-headline-lg text-on-surface text-3xl md:text-4xl">Oversight &amp; Scale.</h2>
-                  <p className="font-body-lg text-on-surface-variant text-base font-light">
+                  <h2 className="font-headline-lg text-on-surface text-3xl md:text-4xl lg:text-3xl xl:text-4xl">Oversight &amp; Scale.</h2>
+                  <p className="font-body-lg text-on-surface-variant text-base font-light lg:text-sm xl:text-base">
                     The Super Admin dashboard gives you a real-time view of the whole platform: user growth, active
                     sessions, and moderator approvals, all in one place. Scaling to more institutions never
                     means losing visibility.
@@ -329,8 +326,8 @@ export default function Experience() {
                   <FeatureList
                     items={ADMIN_FEATURES}
                     as="div"
-                    containerClassName="grid grid-cols-2 gap-x-6 gap-y-3 mt-4"
-                    itemClassName="flex items-center gap-2 text-on-surface text-sm font-medium"
+                    containerClassName="grid grid-cols-2 gap-x-6 gap-y-3 mt-4 lg:gap-x-4 lg:gap-y-2 xl:gap-x-6 xl:gap-y-3"
+                    itemClassName="flex items-center gap-2 text-on-surface text-sm font-medium lg:text-xs xl:text-sm"
                   />
                 </Reveal>
               </div>

@@ -23,8 +23,14 @@ export const STAGGER = {
 }
 
 // Fires slightly before the element enters the viewport, and only once.
-export const VIEWPORT = { once: true, margin: '-80px 0px -80px 0px', amount: 0.2 }
-export const VIEWPORT_EAGER = { once: true, margin: '-40px 0px -40px 0px', amount: 0.1 }
+// Margin only shrinks from the bottom (delaying the trigger for content
+// still approaching from below) — a symmetric top+bottom shrink can leave
+// an element that lands directly in the top dead zone (e.g. a nav-link
+// jump or programmatic scroll landing mid-section) never crossing the
+// visibility threshold, permanently stuck at its hidden opacity. A low
+// `amount` means it doesn't take much of the element on screen to count.
+export const VIEWPORT = { once: true, margin: '0px 0px -60px 0px', amount: 0.05 }
+export const VIEWPORT_EAGER = { once: true, margin: '0px', amount: 0 }
 
 const OFFSETS = {
   up: { y: 24, scale: 0.98 },

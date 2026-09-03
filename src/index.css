@@ -24,10 +24,10 @@ html {
 @keyframes nudge-right {
   0%,
   100% {
-    transform: translateY(-50%) translateX(50%);
+    transform: translateY(-50%) translateX(0);
   }
   50% {
-    transform: translateY(-50%) translateX(65%);
+    transform: translateY(-50%) translateX(4px);
   }
 }
 
@@ -38,10 +38,10 @@ html {
 @keyframes nudge-left {
   0%,
   100% {
-    transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(0);
   }
   50% {
-    transform: translateY(-50%) translateX(-65%);
+    transform: translateY(-50%) translateX(-4px);
   }
 }
 

@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import Icon from '../shared/Icon.jsx'
 import MagneticButton from '../shared/MagneticButton.jsx'
 import { Reveal, RevealGroup, RevealItem } from '../shared/Reveal.jsx'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion.js'
-import { useTilt } from '../../hooks/useTilt.js'
 import { SPRING, STAGGER, breatheLoop } from '../../lib/motion.js'
 import { SITE } from '../../lib/constants.js'
 
@@ -20,73 +18,40 @@ const TRANSFORMATIONS = [
   { title: 'Access', before: 'Practice Tied to Class Schedules', after: 'On-Demand Speaking Practice' },
 ]
 
-const CHECK_POP_VARIANTS = {
-  hidden: { scale: 0, opacity: 0 },
-  visible: { scale: 1, opacity: 1, transition: SPRING.bounce },
-}
-
-// The "after" row drifts gently, as if it's already lighter / resolved —
-// distinguishing it from the static "before" line above it.
-const FLOAT_AFTER = {
-  y: [0, -4, 0],
-  transition: { duration: 3.2, repeat: Infinity, ease: 'easeInOut' },
-}
-
-// Once revealed, the checkmark keeps a very soft breathing pulse so the
-// "after" state reads as alive rather than a one-shot animation that then
-// goes fully static.
-const CHECK_PULSE = {
-  scale: [1, 1.15, 1],
-  transition: { duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
-}
-
 function TransformationCard({ item }) {
   const prefersReducedMotion = usePrefersReducedMotion()
-  const { containerRef, style: tiltStyle, handlers: tiltHandlers } = useTilt({ max: 3 })
 
   return (
-    <motion.div whileHover={prefersReducedMotion ? undefined : { y: -6 }} transition={SPRING.snappy} className="group relative h-full">
-      <div className="pointer-events-none absolute -inset-3 rounded-2xl bg-primary/10 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
-      <motion.div
-        ref={containerRef}
-        style={tiltStyle}
-        {...tiltHandlers}
-        className="relative h-full flex flex-col bg-surface p-8 rounded-xl border border-outline-variant/20 shadow-sm transition-[border-color,box-shadow] duration-300 group-hover:border-primary/30 group-hover:shadow-xl"
-      >
-        <h4 className="font-headline-md text-xl mb-6 text-on-surface">{item.title}</h4>
-        <RevealGroup stagger={0.35} className="flex flex-col gap-4">
-          <RevealItem
-            direction="up"
-            duration={0.4}
-            className="flex items-start gap-3 text-on-surface-variant/70"
-          >
-            <span className="font-label-md text-[10px] uppercase tracking-widest pt-1 w-12">Before</span>
-            <div className="flex gap-2">
-              <Icon name="close" className="text-on-surface-variant/50 text-base" />
-              <span className="text-sm">{item.before}</span>
-            </div>
-          </RevealItem>
+    <motion.div
+      whileHover={prefersReducedMotion ? undefined : { y: -6 }}
+      transition={SPRING.snappy}
+      className="relative h-full flex flex-col overflow-hidden rounded-[28px] border border-outline-variant/15 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_16px_36px_-20px_rgba(15,23,42,0.14)] transition-shadow duration-300 hover:shadow-[0_1px_2px_rgba(15,23,42,0.04),0_20px_40px_-18px_rgba(15,23,42,0.16)]"
+    >
+      <RevealGroup stagger={0.35} className="flex min-h-0 flex-1 flex-col justify-center gap-3 p-8">
+        <RevealItem as="h4" direction="up" duration={0.4} className="font-headline-md text-xl font-semibold text-on-surface tracking-tight">
+          {item.title}
+        </RevealItem>
+        <RevealItem
+          direction="up"
+          duration={0.4}
+          className="flex flex-col gap-1 text-on-surface-variant/60"
+        >
+          <span className="font-label-md text-[10px] uppercase tracking-[0.2em]">Before</span>
+          <span className="text-sm leading-relaxed">{item.before}</span>
+        </RevealItem>
+      </RevealGroup>
 
-          <motion.div animate={prefersReducedMotion ? undefined : FLOAT_AFTER}>
-            <RevealItem direction="up" duration={0.4} className="flex items-start gap-3 text-on-surface">
-              <span className="font-label-md text-[10px] uppercase tracking-widest text-primary pt-1 w-12 font-semibold">
-                VoxPath
-              </span>
-              <div className="flex gap-2">
-                <motion.span variants={CHECK_POP_VARIANTS}>
-                  <motion.span
-                    animate={prefersReducedMotion ? undefined : CHECK_PULSE}
-                    className="inline-flex"
-                  >
-                    <Icon name="check" className="text-primary text-base" />
-                  </motion.span>
-                </motion.span>
-                <span className="text-sm font-medium">{item.after}</span>
-              </div>
-            </RevealItem>
-          </motion.div>
-        </RevealGroup>
-      </motion.div>
+      <RevealItem
+        direction="up"
+        duration={0.4}
+        delay={0.15}
+        className="flex min-h-0 flex-1 flex-col justify-center gap-1 bg-dark-section p-8"
+      >
+        <span className="font-label-md text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">
+          VoxPath
+        </span>
+        <span className="text-base font-semibold leading-snug text-white">{item.after}</span>
+      </RevealItem>
     </motion.div>
   )
 }
@@ -110,7 +75,7 @@ export default function Impact() {
 
           <RevealGroup
             stagger={STAGGER.tight}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr gap-10"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
           >
             {TRANSFORMATIONS.map((item) => (
               <RevealItem key={item.title} direction="up" duration={0.5} className="h-full">

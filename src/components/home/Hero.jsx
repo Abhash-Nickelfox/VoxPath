@@ -15,8 +15,13 @@ export default function Hero() {
   return (
     <section
       id="overview"
-      className="relative min-h-[90vh] flex items-center pt-32 pb-32 overflow-hidden bg-background"
-      style={{ backgroundImage: `url(${heroBg})`, backgroundSize: 'cover', backgroundPosition: 'center center' }}
+      className="relative min-h-screen flex items-center pt-32 pb-32 overflow-hidden bg-background"
+      style={{
+        backgroundImage: `url(${heroBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'right center',
+        backgroundRepeat: 'no-repeat',
+      }}
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent z-0" />
       <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative z-10 w-full">
@@ -75,6 +80,9 @@ export default function Hero() {
                 <img
                   alt="VoxPath AI Dashboard"
                   className="w-full h-auto max-h-[82vh] object-contain rounded-3xl mx-auto"
+                  decoding="async"
+                  fetchPriority="high"
+                  loading="eager"
                   src={heroDashboard}
                 />
               </motion.div>

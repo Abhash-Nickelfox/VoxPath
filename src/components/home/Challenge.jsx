@@ -47,53 +47,59 @@ const CHALLENGES = [
   },
 ]
 
-// Sized so 3 full cards fit with a small symmetric peek of the neighbor on
-// *both* sides at once (not just a right-edge peek) — cards snap to center,
-// so whichever one you land on shows its two neighbors fully and a sliver
-// of the next one out on each edge.
-const CARD_WIDTH_CLASSES = 'w-[74%] md:w-[38%] lg:w-[27%]'
+// Step the visible card count up gradually as width allows, instead of
+// jumping straight from 1 to 3: below md, one card fills the track with no
+// neighbor peek (nothing else fits yet). At md (~768px, tablet) exactly 2
+// full cards fit side by side with no peek. At lg (~1024px, small laptop)
+// there's room for 2 full cards plus a peek of a 3rd. At xl (1280px+,
+// desktop) the peek layout grows to 3 full cards plus a peek of a 4th.
+const CARD_WIDTH_CLASSES = 'w-full md:w-[calc(50%-12px)] lg:w-[38%] xl:w-[27%]'
 
 // Extra breathing room on the track itself (inside the scroll box, not the
-// section's own container padding) so an arrow badge straddling a card's
-// edge always has room to render in full — without this, a badge sitting
-// right at the scrollport's own boundary gets sliced in half by the
-// overflow clipping instead of just visually straddling the card.
-const TRACK_EDGE_PADDING = 'px-8 md:px-10'
+// section's own container padding) so the fixed arrow controls anchored to
+// the track's own edges always have room to render in full — without this,
+// a control sitting right at the scrollport's own boundary gets sliced in
+// half by the overflow clipping.
+// Below lg, there's no peeking neighbor card yet to sit the arrow controls
+// over, so they need enough of their own padding to clear the single/pair
+// of full-width cards entirely instead of overlapping them. At lg+, the
+// peek provides that buffer visually, so the padding can shrink back down.
+const TRACK_EDGE_PADDING = 'px-12 lg:px-10'
 
 function ChallengeCard({ item, cardRef }) {
   return (
     <div
       ref={cardRef}
-      className="relative flex h-full flex-col rounded-xl border border-outline-variant/10 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+      className="relative flex h-full flex-col rounded-xl border border-outline-variant/10 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg md:p-5 lg:p-6"
     >
       <span aria-hidden="true" className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full bg-primary/50" />
       <div className="flex items-center gap-4 mb-3">
-        <span className="font-headline-lg text-4xl font-bold text-primary">{item.number}</span>
+        <span className="font-headline-lg text-4xl font-bold text-primary md:text-3xl lg:text-4xl">{item.number}</span>
       </div>
-      <h3 className="font-headline-md mb-3 text-on-surface text-xl">{item.title}</h3>
-      <p className="text-on-surface-variant font-body-md text-base">{item.description}</p>
+      <h3 className="font-headline-md mb-3 text-on-surface text-xl md:text-lg lg:text-xl">{item.title}</h3>
+      <p className="text-on-surface-variant font-body-md text-base md:text-sm lg:text-base">{item.description}</p>
     </div>
   )
 }
 
 // A card partly clipped by the track's right edge fades toward the
-// background instead of just being cut off, and the card that's currently
-// the last one *fully* visible gets a small animated arrow badge — both
-// computed continuously from each card's own visible fraction, and written
-// straight to the DOM (not React state) so scrolling stays smooth with no
-// per-frame re-renders. Once the final card itself is fully visible (nothing
-// left to reveal on the right), the forward badge hands off to a back badge
-// on the left of the first visible card instead of just vanishing — there's
-// always exactly one arrow on screen, pointing at whichever direction still
-// has something to reveal.
-function useEdgeFade(cardCount) {
+// background instead of just being cut off. The forward/back arrow
+// controls are NOT part of any card — they're fixed at the track's own
+// edges (like the fade overlays) so they read as controls for the whole
+// row, not a button embedded in whichever card happens to sit at the
+// boundary. Their visibility and scroll target are still computed from
+// each card's visible fraction, updated straight on the DOM (not React
+// state) so scrolling stays smooth with no per-frame re-renders.
+function useCarouselControls(cardCount) {
   const trackRef = useRef(null)
   const cardRefs = useRef([])
-  const arrowRefs = useRef([])
-  const backArrowRefs = useRef([])
+  const arrowRef = useRef(null)
+  const backArrowRef = useRef(null)
   const fadeRef = useRef(null)
   const backFadeRef = useRef(null)
   const rafRef = useRef(null)
+  const forwardTargetRef = useRef(-1)
+  const backTargetRef = useRef(-1)
 
   const update = useCallback(() => {
     const track = trackRef.current
@@ -117,17 +123,18 @@ function useEdgeFade(cardCount) {
 
     const isAtStart = fractions[0] >= 0.98
     const isAtEnd = fractions[cardCount - 1] >= 0.98
-    let forwardBadgeIndex = -1
-    let backBadgeIndex = -1
+    let forwardBoundary = -1
+    let backBoundary = -1
 
-    // Forward points at the last fully-visible card, as long as there's
-    // still more beyond it. Back points at the first fully-visible card, as
-    // long as there's still something before it. Both can be true at once
-    // for any middle position, so both arrows show together there.
+    // Forward targets the card just past the last fully-visible one, as
+    // long as there's still more beyond it. Back targets the card just
+    // before the first fully-visible one, as long as there's still
+    // something before it. Both can be true at once for any middle
+    // position, so both controls show together there.
     if (!isAtEnd) {
       for (let i = 0; i < cardCount - 1; i += 1) {
         if (fractions[i] >= 0.98 && fractions[i + 1] < 0.98) {
-          forwardBadgeIndex = i
+          forwardBoundary = i
         }
       }
     }
@@ -135,25 +142,26 @@ function useEdgeFade(cardCount) {
     if (!isAtStart) {
       for (let i = 0; i < cardCount; i += 1) {
         if (fractions[i] >= 0.98) {
-          backBadgeIndex = i
+          backBoundary = i
           break
         }
       }
     }
 
-    arrowRefs.current.forEach((arrow, index) => {
-      if (!arrow) return
-      const visible = index === forwardBadgeIndex
-      arrow.style.opacity = visible ? '1' : '0'
-      arrow.style.pointerEvents = visible ? 'auto' : 'none'
-    })
+    forwardTargetRef.current = forwardBoundary >= 0 ? forwardBoundary + 1 : -1
+    backTargetRef.current = backBoundary > 0 ? backBoundary - 1 : -1
 
-    backArrowRefs.current.forEach((arrow, index) => {
-      if (!arrow) return
-      const visible = index === backBadgeIndex
-      arrow.style.opacity = visible ? '1' : '0'
-      arrow.style.pointerEvents = visible ? 'auto' : 'none'
-    })
+    if (arrowRef.current) {
+      const visible = forwardTargetRef.current >= 0
+      arrowRef.current.style.opacity = visible ? '1' : '0'
+      arrowRef.current.style.pointerEvents = visible ? 'auto' : 'none'
+    }
+
+    if (backArrowRef.current) {
+      const visible = backTargetRef.current >= 0
+      backArrowRef.current.style.opacity = visible ? '1' : '0'
+      backArrowRef.current.style.pointerEvents = visible ? 'auto' : 'none'
+    }
 
     if (fadeRef.current) {
       fadeRef.current.style.opacity = isAtEnd ? '0' : '1'
@@ -189,51 +197,43 @@ function useEdgeFade(cardCount) {
     cardRefs.current[index] = el
   }
 
-  const setArrowRef = (index) => (el) => {
-    arrowRefs.current[index] = el
+  // Centers the given card index in the track, matching the snap-center
+  // behavior so a click lands exactly where native scrolling would.
+  const scrollToIndex = (index) => {
+    const track = trackRef.current
+    const card = cardRefs.current[index]
+    if (!track || !card) return
+    const trackRect = track.getBoundingClientRect()
+    const cardRect = card.getBoundingClientRect()
+    const delta = cardRect.left + cardRect.width / 2 - (trackRect.left + trackRect.width / 2)
+    track.scrollBy({ left: delta, behavior: 'smooth' })
   }
 
-  const setBackArrowRef = (index) => (el) => {
-    backArrowRefs.current[index] = el
+  const scrollForward = () => {
+    if (forwardTargetRef.current >= 0) scrollToIndex(forwardTargetRef.current)
   }
 
-  return { trackRef, fadeRef, backFadeRef, setCardRef, setArrowRef, setBackArrowRef }
+  const scrollBack = () => {
+    if (backTargetRef.current >= 0) scrollToIndex(backTargetRef.current)
+  }
+
+  return {
+    trackRef,
+    fadeRef,
+    backFadeRef,
+    arrowRef,
+    backArrowRef,
+    setCardRef,
+    scrollForward,
+    scrollBack,
+  }
 }
 
 export default function Challenge() {
-  const { trackRef, fadeRef, backFadeRef, setCardRef, setArrowRef, setBackArrowRef } = useEdgeFade(CHALLENGES.length)
-  const cardElsRef = useRef([])
+  const { trackRef, fadeRef, backFadeRef, arrowRef, backArrowRef, setCardRef, scrollForward, scrollBack } =
+    useCarouselControls(CHALLENGES.length)
   const isDraggingRef = useRef(false)
   const dragStartRef = useRef({ x: 0, scrollLeft: 0 })
-
-  const registerCard = (index) => (el) => {
-    cardElsRef.current[index] = el
-    setCardRef(index)(el)
-  }
-
-  // Cards snap to center now, so advancing means centering the *next* card
-  // in the track rather than aligning its left edge — otherwise the click
-  // would fight the browser's own snap and settle somewhere else.
-  const scrollToNextCard = (index) => {
-    const track = trackRef.current
-    const nextCard = cardElsRef.current[index + 1]
-    if (!track || !nextCard) return
-    const trackRect = track.getBoundingClientRect()
-    const nextRect = nextCard.getBoundingClientRect()
-    const delta = nextRect.left + nextRect.width / 2 - (trackRect.left + trackRect.width / 2)
-    track.scrollBy({ left: delta, behavior: 'smooth' })
-  }
-
-  // Mirror of scrollToNextCard for the back badge.
-  const scrollToPrevCard = (index) => {
-    const track = trackRef.current
-    const prevCard = cardElsRef.current[index - 1]
-    if (!track || !prevCard) return
-    const trackRect = track.getBoundingClientRect()
-    const prevRect = prevCard.getBoundingClientRect()
-    const delta = prevRect.left + prevRect.width / 2 - (trackRect.left + trackRect.width / 2)
-    track.scrollBy({ left: delta, behavior: 'smooth' })
-  }
 
   // Mouse-only click-and-drag scrolling for desktop — touch already gets
   // native swipe scrolling from the browser, so touch events are left alone.
@@ -284,32 +284,8 @@ export default function Challenge() {
             className={`no-scrollbar flex snap-x snap-mandatory gap-6 lg:gap-8 overflow-x-auto scroll-smooth py-2 cursor-grab select-none active:cursor-grabbing ${TRACK_EDGE_PADDING}`}
           >
             {CHALLENGES.map((item, index) => (
-              <div key={item.number} className={`relative flex-none snap-center ${CARD_WIDTH_CLASSES}`}>
-                <ChallengeCard item={item} cardRef={registerCard(index)} />
-                {index < CHALLENGES.length - 1 && (
-                  <button
-                    type="button"
-                    ref={setArrowRef(index)}
-                    onClick={() => scrollToNextCard(index)}
-                    aria-label="Scroll to see more challenges"
-                    style={{ opacity: 0, pointerEvents: 'none' }}
-                    className="absolute right-0 top-1/2 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-primary/30 bg-white text-primary shadow-md transition-opacity duration-300 hover:border-primary/60 hover:shadow-lg animate-nudge-right"
-                  >
-                    <Icon name="arrow_forward" className="text-xl" />
-                  </button>
-                )}
-                {index > 0 && (
-                  <button
-                    type="button"
-                    ref={setBackArrowRef(index)}
-                    onClick={() => scrollToPrevCard(index)}
-                    aria-label="Scroll back to previous challenges"
-                    style={{ opacity: 0, pointerEvents: 'none' }}
-                    className="absolute left-0 top-1/2 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-primary/30 bg-white text-primary shadow-md transition-opacity duration-300 hover:border-primary/60 hover:shadow-lg animate-nudge-left"
-                  >
-                    <Icon name="arrow_back" className="text-xl" />
-                  </button>
-                )}
+              <div key={item.number} className={`flex-none snap-center ${CARD_WIDTH_CLASSES}`}>
+                <ChallengeCard item={item} cardRef={setCardRef(index)} />
               </div>
             ))}
           </div>
@@ -327,6 +303,31 @@ export default function Challenge() {
             style={{ opacity: 0 }}
             className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-surface to-transparent transition-opacity duration-300"
           />
+
+          {/* Fixed scroll controls, anchored to the track's own edges — not
+              inside any card — so they read as navigation for the whole row
+              rather than a button that belongs to whichever card is at the
+              boundary. */}
+          <button
+            type="button"
+            ref={arrowRef}
+            onClick={scrollForward}
+            aria-label="Scroll to see more challenges"
+            style={{ opacity: 0, pointerEvents: 'none' }}
+            className="absolute right-0 lg:right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-primary/30 bg-white text-primary shadow-md transition-opacity duration-300 hover:border-primary/60 hover:shadow-lg animate-nudge-right"
+          >
+            <Icon name="arrow_forward" className="text-xl" />
+          </button>
+          <button
+            type="button"
+            ref={backArrowRef}
+            onClick={scrollBack}
+            aria-label="Scroll back to previous challenges"
+            style={{ opacity: 0, pointerEvents: 'none' }}
+            className="absolute left-0 lg:left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-primary/30 bg-white text-primary shadow-md transition-opacity duration-300 hover:border-primary/60 hover:shadow-lg animate-nudge-left"
+          >
+            <Icon name="arrow_back" className="text-xl" />
+          </button>
         </Reveal>
       </div>
     </section>

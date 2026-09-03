@@ -130,17 +130,21 @@ function StickyVisual({ progress }) {
   return (
     <div className="lg:col-span-7 relative lg:sticky lg:top-28 self-start">
       <div className="absolute inset-0 bg-primary/10 blur-[80px] rounded-full z-0 transform scale-75" />
-      {/* ml-auto (not mx-auto): pushes the panel to the column's right edge
-          — aligned with the navbar's right boundary — instead of centering
-          it and leaving unused space on both sides. Any slack becomes extra
-          gap toward the text column on the left, not dead space on the
-          right. */}
-      <div className="relative w-full max-w-md ml-auto aspect-square z-10">
+      {/* Center the panel while stacked, then align it to the desktop grid edge
+          once the sticky two-column layout takes over. */}
+      <div className="relative w-full max-w-md mx-auto lg:ml-auto lg:mr-0 aspect-square z-10">
+        <div aria-hidden="true" className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0">
+          {VISUALS.map((item) => (
+            <img key={item.src} alt="" decoding="async" loading="lazy" src={item.src} />
+          ))}
+        </div>
         <AnimatePresence initial={false}>
           <motion.img
             key={activeVisual}
             src={visual.src}
             alt={visual.alt}
+            decoding="async"
+            loading="lazy"
             initial={prefersReducedMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={prefersReducedMotion ? undefined : { opacity: 0 }}
