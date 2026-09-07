@@ -186,7 +186,7 @@ export default function Solution() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent z-0" />
       <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative z-10">
         <Reveal direction="up" className="text-center mb-14 max-w-3xl mx-auto">
-          <div className="inline-block font-label-md text-primary tracking-widest uppercase mb-4 font-semibold text-4xl">
+          <div className="inline-block font-label-md text-primary tracking-widest uppercase mb-4 font-semibold text-2xl sm:text-4xl">
             A SEAMLESS SPEAKING JOURNEY
           </div>
           <h2 className="font-display-lg text-on-surface mb-6">One Connected Journey.</h2>
@@ -195,7 +195,7 @@ export default function Solution() {
           </p>
         </Reveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
           <div className="lg:col-span-5 flex flex-col gap-10">
             <div ref={stepsRef} className="relative flex flex-col gap-10">
               <ScrollProgressLine progress={progress} />
@@ -212,7 +212,7 @@ export default function Solution() {
                 point is containerBottom - top - panelHeight, so raising top
                 by 48px (from the previous top-16) needs this spacer 48px
                 taller too, to keep the release exactly where it was. */}
-            <div aria-hidden="true" className="h-16" />
+            <div aria-hidden="true" className="hidden lg:block h-16" />
           </div>
 
           <StickyVisual progress={progress} />

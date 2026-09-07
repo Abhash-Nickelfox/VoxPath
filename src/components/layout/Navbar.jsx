@@ -77,7 +77,7 @@ export default function Navbar() {
         className="relative max-w-container-max mx-auto px-6 md:px-margin-desktop h-20 flex justify-between items-center"
       >
         <Link to="/" className="flex items-center gap-3 text-primary hover:opacity-80 transition-opacity">
-          <span className="font-headline-md font-bold tracking-tight text-4xl text-on-surface">{SITE.name}</span>
+          <span className="font-headline-md font-bold tracking-tight text-2xl sm:text-3xl lg:text-4xl text-on-surface">{SITE.name}</span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-10">

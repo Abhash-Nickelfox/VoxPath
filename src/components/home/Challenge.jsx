@@ -55,17 +55,6 @@ const CHALLENGES = [
 // desktop) the peek layout grows to 3 full cards plus a peek of a 4th.
 const CARD_WIDTH_CLASSES = 'w-full md:w-[calc(50%-12px)] lg:w-[38%] xl:w-[27%]'
 
-// Extra breathing room on the track itself (inside the scroll box, not the
-// section's own container padding) so the fixed arrow controls anchored to
-// the track's own edges always have room to render in full — without this,
-// a control sitting right at the scrollport's own boundary gets sliced in
-// half by the overflow clipping.
-// Below lg, there's no peeking neighbor card yet to sit the arrow controls
-// over, so they need enough of their own padding to clear the single/pair
-// of full-width cards entirely instead of overlapping them. At lg+, the
-// peek provides that buffer visually, so the padding can shrink back down.
-const TRACK_EDGE_PADDING = 'px-12 lg:px-10'
-
 function ChallengeCard({ item, cardRef }) {
   return (
     <div
@@ -261,7 +250,7 @@ export default function Challenge() {
     <section className="pt-12 md:pt-16 pb-9 md:pb-12 bg-surface" id="challenge">
       <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop">
         <Reveal direction="up" className="mb-10 max-w-3xl">
-          <h2 className="font-label-md text-primary tracking-widest uppercase mb-6 font-semibold text-4xl">
+          <h2 className="font-label-md text-primary tracking-widest uppercase mb-6 font-semibold text-2xl sm:text-4xl">
             THE FRAGMENTED LEARNING GAP
           </h2>
           <p className="font-body-lg text-on-surface-variant text-lg font-light">
@@ -281,7 +270,7 @@ export default function Challenge() {
             onMouseMove={handleMouseMove}
             onMouseUp={endDrag}
             onMouseLeave={endDrag}
-            className={`no-scrollbar flex snap-x snap-mandatory gap-6 lg:gap-8 overflow-x-auto scroll-smooth py-2 cursor-grab select-none active:cursor-grabbing ${TRACK_EDGE_PADDING}`}
+            className="no-scrollbar flex snap-x snap-mandatory gap-6 lg:gap-8 overflow-x-auto scroll-smooth py-2 cursor-grab select-none active:cursor-grabbing"
           >
             {CHALLENGES.map((item, index) => (
               <div key={item.number} className={`flex-none snap-center ${CARD_WIDTH_CLASSES}`}>

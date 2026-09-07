@@ -4,6 +4,14 @@
 
 html {
   scroll-behavior: smooth;
+  /* body already has overflow-x:hidden, but html is the actual root
+     scroller in this app's DOM structure — without setting it here too,
+     body's overflow-x doesn't propagate up, and the page remains
+     horizontally scrollable/pannable by whatever a not-yet-revealed
+     scroll-animated element's initial x-offset transform contributes to
+     the document's scrollable width (verified: window.scrollTo could
+     still move scrollX despite body's own overflow-x:hidden). */
+  overflow-x: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
